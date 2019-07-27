@@ -1,3 +1,18 @@
 language: c
 os: osx
 script: ./build.sh
+# @todo needs work
+before_deploy:
+- git config --local user.name "Thomas Brown"
+- git config --local user.email "tabsoftwareconsulting@gmail.com"
+- export TRAVIS_TAG=${TRAVIS_TAG:-$(date +'%Y%m%d%H%M%S')}
+- git tag ${TRAVIS_TAG}
+- pushd emacs/nextstep && zip -r Emacs.app.zip Emacs.app && popd
+deploy:
+  provider: releases
+  api_key:
+    secure: S6xhvaehN4O4yIW+Og7Pd1M8/fkKrHjspS2F4gquzA80+5ovCR8uFjQfTsQG7HggWEmGT9xs5+xcVyMMfYuxxmNyeohHvu9SBF5y/ZKj71obOxsX7JLIR4R/aGDJT9SwTBzWSk38QzOyD1oKRDjf7j5599e7N/fAyY+T+iLvaZH0ySLKG5xee5ExMIhj8INR1d7H3GyRZy9f2Ar7zyDNiey7ib4Tl/tlwUTspxxw3HmNImIb6kqpjOXiDuxJIdAcwyOLaMpREtaInEaUM7sWxyM/mJyI/pR9BHcTm+BdwkokzSpdlRpBvETCObbuzwJke3OdL1hx7NvHZm6bje0dZB55ILcMkg8tpjTp6t+TGHrWfxvSEdpgOPzHb+2RRD7dF1x3RtPlQJxTRWIpe9dDEVRtte/CDWuHSYzFQO1G/vTDb/6cDfIHz/CWUsNpoCEb9SeXesVVKOSdPXNbmzxPdMvalFbPzTQZ+JxxkCSBFyJ6hdX4qJ53RZyfCnRybXWwIQJGix/xU4PEuLFqoStkuGEFwW+VJrzbTCGol0xswyChjg/4WUvdGKfbuFcDAq3pvJajZhM/Jmn7sxg0r8wojGumhcZ7SwgFLFUki2werC8RblxmSyxBc3BDa1IVwr37zUBnws7NfNlL1oQbR211qEtmnFnM1YIIkGJymxSWFKg=
+  file: emacs/nextstep/Emacs.app.zip
+  skip_cleanup: true
+  on:
+    tag: true
