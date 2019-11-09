@@ -1,6 +1,6 @@
 **This very much a work in progress, so please do not use it yet.  It
 is currently an experiment to see if this is a reasonable approach to
-replacing the hardware and storage requirements of emacsformacsx.com
+replacing the hardware and storage requirements of emacsformacosx.com
 with resources from GitHub.**
 
 # Build Emacs for macOS via CI
