@@ -9,7 +9,8 @@ set -u
 
 git clone --depth=1 --branch=master https://git.savannah.gnu.org/git/emacs.git
 pushd emacs
+./autogen.sh
 make configure
-./configure --with-ns --without-makeinfo
+./configure
 make
 popd
