@@ -8,9 +8,10 @@ set -e
 set -u
 
 git clone --depth=1 --branch=master https://git.savannah.gnu.org/git/emacs.git
-pushd emacs
+owd=$(pwd)
+cd emacs
 ./autogen.sh
 make configure
 ./configure
 make
-popd
+cd "${owd}"
