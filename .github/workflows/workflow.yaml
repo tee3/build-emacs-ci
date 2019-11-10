@@ -1,6 +1,8 @@
 # Copyright 2019 Thomas Brown (tabsoftwareconsulting@gmail.com)
 
-on: push
+on:
+  schedule:
+  - cron: "0 0 * * *"
 
 jobs:
   build:
