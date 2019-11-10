@@ -1,0 +1,56 @@
+on: push
+
+jobs:
+  build:
+    runs-on: macOS-latest
+    env:
+      branch: 'master'
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v1
+    - name: Packages
+      run: brew install autoconf gnutls pkg-config texinfo
+    - name: Clone
+      run: |
+        git clone --depth=1 --branch=${branch} https://git.savannah.gnu.org/git/emacs.git
+    - name: Build Script
+      env:
+        CPPFLAGS: '-isystem /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/libxml2'
+      run: |
+        PATH=$(brew --prefix texinfo)/bin:${PATH}
+        cd emacs
+        ./autogen.sh
+        ./configure
+        make
+        make install
+    - name: Zip
+      run: |
+        cd emacs/nextstep
+        zip -r Emacs.app.zip Emacs.app
+    - name: Generate Tag and Release Name
+      id: tag
+      run: |
+        export dn=$(date -j -u +'%Y%m%d%H%M%S')
+        export c=$(git -C emacs rev-parse HEAD)
+        echo "::set-output name=tag_name::${dn}-${c}"
+        echo "::set-output name=release_name::${dn}-${c}"
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1.0.0
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ steps.tag.outputs.tag_name }}
+        release_name: ${{ steps.tag.outputs.release_name }}
+        draft: false
+        prerelease: true
+    - name: Upload Release Asset
+      id: upload-release-asset
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: emacs/nextstep/Emacs.app.zip
+        asset_name: Emacs.app.zip
+        asset_content_type: application/zip
