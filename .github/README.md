@@ -21,3 +21,11 @@ Releases.
 * build and publish all pre-releases on tag
   * tags that match the regular expression `emacs-[0-9]+\.[0-9]+-rc[0-9]+`
 * build and publish the `master` branch nightly.
+
+## License
+
+Copyright 2019 Thomas Brown (tabsoftwareconsulting@gmail.com)
+
+The scripts and programs contained in this distribution are licensed
+under the GNU General Public License (v3.0). See the LICENSE file for
+details.
