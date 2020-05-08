@@ -13,7 +13,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v1
     - name: Packages
-      run: brew install autoconf gnutls pkg-config texinfo
+      run: brew install autoconf gnutls pkg-config texinfo jansson
     - name: Clone
       run: |
         git clone --depth=1 --branch=${branch} https://git.savannah.gnu.org/git/emacs.git
